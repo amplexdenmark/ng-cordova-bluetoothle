@@ -692,12 +692,12 @@ angular.module('ngCordovaBluetoothLE', []).factory('$cordovaBluetoothLE', ['$q',
   };
 
 
-  var hasPermission = function() {
+  var hasCertainPermission = function(certain) {
     var q = $q.defer();
     if (window.bluetoothle === undefined) {
       q.reject(errorUnsupported);
     } else {
-      window.bluetoothle.hasPermission(
+      certain(
         function(obj) {
           q.resolve(obj);
         },
@@ -709,12 +709,12 @@ angular.module('ngCordovaBluetoothLE', []).factory('$cordovaBluetoothLE', ['$q',
     return q.promise;
   };
 
-  var requestPermission = function() {
+  var requestCertainPermission = function(certain) {
     var q = $q.defer();
     if (window.bluetoothle === undefined) {
       q.reject(errorUnsupported);
     } else {
-      window.bluetoothle.requestPermission(
+      certain(
         function(obj) {
           q.resolve(obj);
         },
@@ -724,6 +724,36 @@ angular.module('ngCordovaBluetoothLE', []).factory('$cordovaBluetoothLE', ['$q',
       );
     }
     return q.promise;
+  };
+
+  
+  var hasPermissionBtAdvertise = function() {
+    return hasCertainPermission(window.bluetoothle.hasPermissionBtAdvertise);
+  };
+
+  var requestPermissionBtAdvertise = function() {
+    return requestCertainPermission(window.bluetoothle.requestPermissionBtAdvertise);
+  };
+    
+  var hasPermissionBtScan = function() {
+    return hasCertainPermission(window.bluetoothle.hasPermissionBtScan);
+  };
+  var requestPermissionBtScan = function() {
+    return requestCertainPermission(window.bluetoothle.requestPermissionBtScan);
+  };
+  var hasPermissionBtConnect = function() {
+    return hasCertainPermission(window.bluetoothle.hasPermissionBtConnect);
+  };
+  var requestPermissionBtConnect = function() {
+    return requestCertainPermission(window.bluetoothle.requestPermissionBtConnect);
+  };
+
+  var hasPermission = function() {
+    return hasCertainPermission(window.bluetoothle.hasPermission);
+  };
+
+  var requestPermission = function() {
+    return requestCertainPermission(window.bluetoothle.requestPermission);
   };
 
   var isLocationEnabled = function() {
@@ -1002,6 +1032,13 @@ angular.module('ngCordovaBluetoothLE', []).factory('$cordovaBluetoothLE', ['$q',
     isConnected: isConnected,
     isDiscovered: isDiscovered,
 
+    hasPermissionBtAdvertise: hasPermissionBtAdvertise,
+    requestPermissionBtAdvertise: requestPermissionBtAdvertise,
+    hasPermissionBtScan: hasPermissionBtScan,
+    requestPermissionBtScan: requestPermissionBtScan,
+    hasPermissionBtConnect: hasPermissionBtConnect,
+    requestPermissionBtConnect: requestPermissionBtConnect,
+    
     hasPermission: hasPermission,
     requestPermission: requestPermission,
     isLocationEnabled: isLocationEnabled,
